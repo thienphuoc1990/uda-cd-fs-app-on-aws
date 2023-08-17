@@ -36,13 +36,16 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
         return res.status(400).send("The image_url query param is required!");
       }
       //    2. call filterImageFromURL(image_url) to filter the image
-      const filteredImagePath = await filterImageFromURL(imageUrl);
-      //    3. send the resulting file in the response
-      res.sendFile(filteredImagePath);
-      //    4. deletes any files on the server on finish of the response
-      res.on("finish", () => deleteLocalFiles([filteredImagePath]));
+      filterImageFromURL(imageUrl).then((filteredImagePath) => {
+        //    3. send the resulting file in the response
+        res.sendFile(filteredImagePath);
+        //    4. deletes any files on the server on finish of the response
+        res.on("finish", () => deleteLocalFiles([filteredImagePath]));
+      }).catch((error) => {
+        res.status(422).send("The image URL can not process! Please try with other image URLs.");
+      });
     } catch (error) {
-      console.log(error);
+      res.status(500).send("Internal Server Error.");
     }
   });
 
