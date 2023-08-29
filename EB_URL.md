@@ -1,0 +1,1 @@
+http://uda-cd-fs-app-on-aws-dev.us-east-1.elasticbeanstalk.com/filteredimage?image_url=https://mtv.vn/uploads/2023/02/25/meo-dd.jpg
