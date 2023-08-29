@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
@@ -28,15 +28,15 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
 
   /**************************************************************************** */
-  app.get("/filteredimage", async (req, res ) => {
+  app.get("/filteredimage", async (req: Request, res: Response ) => {
     try {
-      const imageUrl = req.query.image_url;
+      const image_url: string = req.query.image_url;
       //    1. validate the image_url query
-      if(!imageUrl){
+      if(!image_url){
         return res.status(400).send("The image_url query param is required!");
       }
       //    2. call filterImageFromURL(image_url) to filter the image
-      filterImageFromURL(imageUrl).then((filteredImagePath) => {
+      filterImageFromURL(image_url).then((filteredImagePath: string) => {
         //    3. send the resulting file in the response
         res.sendFile(filteredImagePath);
         //    4. deletes any files on the server on finish of the response
@@ -53,7 +53,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   
   // Root Endpoint
   // Displays a simple message to the user
-  app.get( "/", async ( req, res ) => {
+  app.get( "/", async ( req: Request, res: Response ) => {
     res.send("try GET /filteredimage?image_url={{}}")
   } );
   
